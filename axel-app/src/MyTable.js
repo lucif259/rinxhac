@@ -6,7 +6,7 @@ import HyperFormula from 'hyperformula';
 import BottomBar from './BottomBar'; 
 import ErrorBoundary from './ErrorBoundary'; 
 import axios from 'axios'; 
-import './MyTable.css';
+import './App.css';
 
 registerAllModules();
 
@@ -229,116 +229,116 @@ const MyTable = () => {
         return cells;
     };
 
-const handleAfterChange = (changes) => {
-    if (!changes) return;
+    const handleAfterChange = (changes) => {
+        if (!changes) return;
 
-    setTables((prevTables) =>
-        prevTables.map((table) => {
-            if (table.id === activeTableId) {
-                const newData = [...table.data];
-                const newFormulas = { ...formulas };
+        setTables((prevTables) =>
+            prevTables.map((table) => {
+                if (table.id === activeTableId) {
+                    const newData = [...table.data];
+                    const newFormulas = { ...formulas };
 
-                changes.forEach(([row, col, oldVal, newVal]) => {
-                    const cellKey = `${row}_${col}`;
+                    changes.forEach(([row, col, oldVal, newVal]) => {
+                        const cellKey = `${row}_${col}`;
+                    
+                        if (typeof newVal === 'string' && newVal.startsWith('=')) {
+                            // Сохраняем новую формулу
+                            newFormulas[cellKey] = newVal;
+                            // Вычисляем значение
+                            const evaluated = evaluateFormula(newVal, newData);
+                            newData[row][col] = evaluated;
+                        } else {
+                            // Удаляем формулу, если введено обычное значение
+                            delete newFormulas[cellKey];
+                            newData[row][col] = newVal;
+                        }
+                    });
 
-                    if (newVal.startsWith('=')) {
-                        // Сохраняем новую формулу
-                        newFormulas[cellKey] = newVal;
-                        // Вычисляем значение
-                        const evaluated = evaluateFormula(newVal, newData);
-                        newData[row][col] = evaluated;
-                    } else {
-                        // Удаляем формулу, если введено обычное значение
-                        delete newFormulas[cellKey];
-                        newData[row][col] = newVal;
-                    }
-                });
+                    setFormulas(newFormulas);
+                    return { ...table, data: newData };
+                }
+                return table;
+            })
+        );
+    };
+        
 
-                setFormulas(newFormulas);
-                return { ...table, data: newData };
-            }
-            return table;
-        })
-    );
-};
-    
-
-const handleAfterSelection = (row, col) => {
-    const cellKey = `${row}_${col}`;
-    if (formulas[cellKey]) {
-        hotRef.current.hotInstance.setDataAtCell(row, col, formulas[cellKey]); // Отображаем формулу
-    }
-};
-    
-const handleAfterDeselect = () => {
-    setTables((prevTables) =>
-        prevTables.map((table) => {
-            if (table.id === activeTableId) {
-                const newData = [...table.data];
-                Object.keys(formulas).forEach((key) => {
-                    const [row, col] = key.split('_').map(Number);
-                    if (formulas[key]) {
-                        newData[row][col] = evaluateFormula(formulas[key], newData); // Пересчитываем значение
-                    }
-                });
-                return { ...table, data: newData };
-            }
-            return table;
-        })
-    );
-};
-    
-    
-return (
-    <div>
-        <ErrorBoundary>
-            <div className="table-container">
-                <h2></h2>
-                <div>
-                    {tables.map(table => (
-                        <div key={table.id} style={{ display: 'inline-block', marginRight: '10px' }}>
-                            <button className="table-button" onClick={() => switchTable(table.id)}>
-                                {table.name}
-                            </button>
-                            <button className="delete-button" onClick={() => deleteTable(table.id)}>Удалить</button>
-                        </div>
-                    ))}
-                    <button className="add-table-button" onClick={addTable}>Добавить Таблицу</button>
+    const handleAfterSelection = (row, col) => {
+        const cellKey = `${row}_${col}`;
+        if (formulas[cellKey]) {
+            hotRef.current.hotInstance.setDataAtCell(row, col, formulas[cellKey]); // Отображаем формулу
+        }
+    };
+        
+    const handleAfterDeselect = () => {
+        setTables((prevTables) =>
+            prevTables.map((table) => {
+                if (table.id === activeTableId) {
+                    const newData = [...table.data];
+                    Object.keys(formulas).forEach((key) => {
+                        const [row, col] = key.split('_').map(Number);
+                        if (formulas[key]) {
+                            newData[row][col] = evaluateFormula(formulas[key], newData); // Пересчитываем значение
+                        }
+                    });
+                    return { ...table, data: newData };
+                }
+                return table;
+            })
+        );
+    };
+        
+        
+    return (
+        <div>
+            <ErrorBoundary>
+                <div className="table-container">
+                    <h2></h2>
+                    <div>
+                        {tables.map(table => (
+                            <div key={table.id} style={{ display: 'inline-block', marginRight: '10px' }}>
+                                <button className="table-button" onClick={() => switchTable(table.id)}>
+                                    {table.name}
+                                </button>
+                                <button className="delete-button" onClick={() => deleteTable(table.id)}>Удалить</button>
+                            </div>
+                        ))}
+                        <button className="add-table-button" onClick={addTable}>Добавить Таблицу</button>
+                    </div>
                 </div>
-            </div>
-            <BottomBar
-                onFontChange={handleFontChange}
-                onFontSizeChange={handleFontSizeChange}
-                onBoldToggle={toggleBold}
-                onItalicToggle={toggleItalic}
-                onTextColorChange={handleTextColorChange}
-                onBgColorChange={handleBgColorChange}
-                onAlignChange={handleAlignChange}
-                onAddRow={addRow}
-                onDeleteRow={deleteRow}
-                onAddColumn={addColumn}
-                onDeleteColumn={deleteColumn}
-                onSaveTable={saveTable}
-            />
-            <HotTable
-                ref={hotRef}
-                data={tables.find(table => table.id === activeTableId).data} // Get data for active table
-                rowHeaders={true}
-                colHeaders={true}
-                licenseKey='non-commercial-and-evaluation'
-                height="auto"
-                autoWrapRow={true}
-                manualRowResize={true}
-                manualColumnResize={true}
-                outsideClickDeselects={false}
-                afterChange={handleAfterChange}
-                formulas={{ engine: HyperFormula.buildEmpty() }}
-                afterSelection={(row, col) => handleAfterSelection(row, col)}
-                afterDeselect={() => handleAfterDeselect()}
-            />
-        </ErrorBoundary>
-    </div>
-);
-};
+                <BottomBar
+                    onFontChange={handleFontChange}
+                    onFontSizeChange={handleFontSizeChange}
+                    onBoldToggle={toggleBold}
+                    onItalicToggle={toggleItalic}
+                    onTextColorChange={handleTextColorChange}
+                    onBgColorChange={handleBgColorChange}
+                    onAlignChange={handleAlignChange}
+                    onAddRow={addRow}
+                    onDeleteRow={deleteRow}
+                    onAddColumn={addColumn}
+                    onDeleteColumn={deleteColumn}
+                    onSaveTable={saveTable}
+                />
+                <HotTable
+                    ref={hotRef}
+                    data={tables.find(table => table.id === activeTableId).data} // Get data for active table
+                    rowHeaders={true}
+                    colHeaders={true}
+                    licenseKey='non-commercial-and-evaluation'
+                    height="auto"
+                    autoWrapRow={true}
+                    manualRowResize={true}
+                    manualColumnResize={true}
+                    outsideClickDeselects={false}
+                    afterChange={handleAfterChange}
+                    formulas={{ engine: HyperFormula.buildEmpty() }}
+                    afterSelection={(row, col) => handleAfterSelection(row, col)}
+                    afterDeselect={() => handleAfterDeselect()}
+                />
+            </ErrorBoundary>
+        </div>
+    );
+    };
 
 export default MyTable;
