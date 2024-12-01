@@ -1,6 +1,3 @@
-/* App.css */
-
-/* Общие стили для контейнера приложения */
 body {
   font-family: 'Arial', sans-serif;
   background-color: #f4f4f4;
@@ -8,45 +5,126 @@ body {
   padding: 20px;
 }
 
-/* Стили для заголовка приложения */
 h1 {
   text-align: center;
-  color: #333;
+  color: #ff0000;
+  margin-top: -35px; 
+  margin-bottom: -25px;
 }
 
-/* Стили для таблицы Handsontable */
 .handsontable {
-  border: 1px solid #ddd; /* Граница вокруг таблицы */
-  border-radius: 5px; /* Закругленные углы */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для эффекта глубины */
-  background-color: #fff; /* Цвет фона таблицы */
+  border: 1px solid #ddd; 
+  border-radius: 5px; 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+  background-color: #fff; 
 }
 
-/* Стили для заголовков колонок */
 .handsontable th {
-  background-color: #007bff; /* Цвет фона заголовков */
-  color: white; /* Цвет текста заголовков */
-  font-weight: bold; /* Жирный шрифт для заголовков */
+  background-color: #000000;
+  color: white;
+  font-weight: bold;
 }
 
-/* Стили для ячеек таблицы */
 .handsontable td {
-  padding: 10px; /* Отступы внутри ячеек */
-  text-align: center; /* Выравнивание текста по центру */
-  border-bottom: 1px solid #ddd; /* Граница между строками */
+  padding: 10px; 
+  text-align: center; 
+  border-bottom: 1px solid #ddd;
 }
 
-/* Стили для выделения ячеек при наведении */
 .handsontable td:hover {
-  background-color: #e9ecef; /* Цвет фона при наведении мыши */
+  background-color: #e9ecef;
 }
 
-/* Стили для выделенных ячеек (активных) */
 .handsontable .htSelection {
-  background-color: rgba(0, 123, 255, 0.3); /* Полупрозрачный цвет при выделении */
+  background-color: #ff0000;
 }
 
-/* Стили для строки с заголовками (если используется) */
 .handsontable .htRow:first-child {
-  border-top: 2px solid #007bff; /* Более толстая граница сверху первой строки */
+  border-top: 2px solid #ff0000; 
+}
+
+body {
+  background-color: rgb(0, 0, 0);
+  color: white;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center; /* Align items vertically centered */
+  justify-content: flex-start; /* Align items to the left */
+  margin-bottom: 10px; /* Space below the logo container */
+}
+
+.logo-label {
+  font-size: 24px; /* Adjust font size as needed */
+  color: white; /* Change text color if necessary */
+  margin-right: 10px; /* Space between label and logo */
+}
+
+.logo {
+  width: 50px; 
+  height: auto; 
+  margin-left: 46.5%;
+  margin-bottom: -0.6%;
+}
+
+.table-container { /* Changed from .sheet-container to .table-container */
+  margin-bottom: 20px;
+}
+
+.table-button { /* Changed from .sheet-button to .table-button */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin-right: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.table-button:hover { /* Changed from .sheet-button:hover to .table-button:hover */
+  background-color: #0056b3;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+.add-table-button { /* Changed from .add-sheet-button to .add-table-button */
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+}
+
+.add-table-button:hover { /* Changed from .add-sheet-button:hover to .add-table-button:hover */
+   background-color: #218838;
+}
+
+.bottom-bar {
+   margin-top:20px; 
+}
+
+/* Customize the HotTable (Handsontable) styles */
+.handsontable th,
+.handsontable td {
+   border-bottom:1px solid #ddd; /* Light gray border for table cells */
+}
+
+.handsontable th {
+   background-color:#007bff; /* Header background color */
+   color:white; /* Header text color */
+}
+
+.handsontable td {
+   padding :10 px ; /* Padding for table cells */
 }

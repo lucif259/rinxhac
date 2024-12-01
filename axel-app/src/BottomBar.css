@@ -1,0 +1,57 @@
+/* BottomBar.css */
+.bottom-bar {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center; 
+    padding: 10px 20px; 
+    background-color: #ff0000; 
+    color: white; 
+    border-radius: 5px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+}
+
+.bottom-bar__select,
+.bottom-bar__button,
+.bottom-bar__color-picker {
+    padding: 8px 12px; 
+    font-size: 16px; 
+    margin-right: 10px; 
+    border-radius: 4px; 
+    border: none; 
+}
+
+.bottom-bar__select {
+    background-color: #fff; 
+}
+
+.bottom-bar__button {
+    background-color: #000000; 
+    color: white; 
+    transition: background-color 0.3s ease; 
+}
+
+.bottom-bar__button:hover {
+    background-color: #ff0000; 
+}
+
+.bottom-bar__color-picker {
+    width: 40px; 
+    height: 40px; 
+}
+.custom-cell-style {
+    font-family: Arial; 
+    font-size: 12px; 
+}
+
+.custom-cell-style {
+    
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
